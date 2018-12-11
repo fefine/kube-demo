@@ -23,7 +23,7 @@ spec:
         image: nginx
         volumeMounts:
         - name: db-secret
-          mountPath: "/secret"
+          mountPath: "/secrets"
           readOnly: true
       volumes:
       - name: db-secret
