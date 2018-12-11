@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-volume-secret
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: volume-secret
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        run: volume-secret
+    spec:
+      containers:
+      - name: test-volume-secret
+        image: nginx
+        volumeMounts:
+        - name: db-secret
+          mountPath: "/secret"
+          readOnly: true
+      volumes:
+      - name: db-secret
+        projected:
+          sources:
+          - secret:
+              name: my-secret
